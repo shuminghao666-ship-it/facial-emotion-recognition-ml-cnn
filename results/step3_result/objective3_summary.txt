@@ -1,0 +1,31 @@
+Objective 3 Summary
+============================================================
+
+Tasks completed:
+1. Loaded the best CNN model from Objective 2.
+2. Extracted CNN deep features from the penultimate representation layer.
+3. Trained Logistic Regression, KNN, and SGD Linear SVM on CNN deep features.
+4. Applied PCA to CNN deep features and trained ML classifiers on the reduced feature space.
+5. Extracted HOG features and fused them with CNN deep features.
+6. Trained Logistic Regression, KNN, and SGD Linear SVM on fused features.
+7. Built CNN + ML probability fusion models and selected fusion weights on the validation set.
+8. Added Step1-guided confusion-aware ML correction for uncertain CNN predictions.
+9. Trained stacking meta-classifiers using CNN and ML probability outputs.
+10. Compared end-to-end CNN, CNN-feature ML, PCA-feature ML, HOG-CNN fusion, probability-fusion, confusion correction, and stacking models.
+11. Generated Grad-CAM visual explanations.
+
+Best Validation Macro-F1 Model:
+Stacked_CNN_ML_Probabilities + Stacking_Logistic_Regression
+Validation Accuracy: 0.6686
+Validation Macro F1: 0.5985
+
+Best Test Macro-F1 Model:
+Stacked_CNN_ML_Probabilities + Stacking_Balanced_Logistic_Regression
+Test Accuracy: 0.6388
+Test Macro F1: 0.6078
+Test Weighted F1: 0.6397
+
+Objective 1 result file was found.
+Objective 1 and Objective 3 use different validation split ratios, so validation metrics should not be directly compared.
+However, test-set metrics can still be used as broad baseline references.
+Objective 3 uses Objective 1 insight directly: HOG and distance-weighted KNN are included in the specialist correction stage because they were the strongest traditional ML baseline signals.

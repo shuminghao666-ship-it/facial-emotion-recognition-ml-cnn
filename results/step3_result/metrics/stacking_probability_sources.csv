@@ -1,0 +1,8 @@
+﻿Source_Index,Source
+0,CNN_Softmax
+1,CNN_Deep_Feature_Logistic_Regression
+2,CNN_Deep_Feature_KNN
+3,PCA_CNN_Deep_Feature_Logistic_Regression
+4,PCA_CNN_Deep_Feature_KNN
+5,HOG_CNN_Fusion_Logistic_Regression
+6,HOG_CNN_Fusion_KNN

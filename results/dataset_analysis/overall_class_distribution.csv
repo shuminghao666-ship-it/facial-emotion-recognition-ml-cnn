@@ -1,0 +1,8 @@
+﻿Class,Train_Count,Test_Count,Total_Count,Total_Percentage
+Angry,3995,958,4953,13.8
+Disgust,111,436,547,1.52
+Fear,4097,1024,5121,14.27
+Happy,7215,1774,8989,25.05
+Neutral,4965,1233,6198,17.27
+Sad,4830,1247,6077,16.93
+Surprise,3171,831,4002,11.15

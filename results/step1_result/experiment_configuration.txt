@@ -1,0 +1,41 @@
+
+Objective 1: Traditional Machine Learning Baselines for FER
+
+Train Directory:
+/Users/samuel/Desktop/ML/data/train
+
+Test Directory:
+/Users/samuel/Desktop/ML/data/test
+
+Image Size:
+(48, 48)
+
+Train / Validation Split:
+80% / 20%
+
+Random State:
+42
+
+Feature Types:
+1. Raw pixel feature: flattened 48x48 grayscale pixels, used as a lightweight baseline only
+2. HOG feature: hand-crafted gradient orientation descriptor, used as the main traditional ML feature
+
+HOG Parameters:
+- orientations = 9
+- pixels_per_cell = (8, 8)
+- cells_per_block = (2, 2)
+- block_norm = L2-Hys
+
+Models:
+1. Raw Pixel + SGD Linear SVM baseline
+2. HOG + Logistic Regression
+3. HOG + KNN
+4. HOG + SGD Linear SVM
+
+Model Selection:
+Validation-based hyperparameter tuning using Macro_F1.
+Raw Pixel is kept as a lightweight reference baseline, while HOG models receive the main tuning effort.
+The independent test set is used only for final evaluation.
+
+Output Folder:
+/Users/samuel/Desktop/ML/results/step1_result

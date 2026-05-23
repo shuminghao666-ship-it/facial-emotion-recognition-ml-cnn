@@ -1,0 +1,15 @@
+﻿Split,Class,Folder,Count,Percentage,Total_In_Split
+Train,Angry,/Users/samuel/Desktop/ML/data/train/Angry,3995,14.07,28384
+Train,Disgust,/Users/samuel/Desktop/ML/data/train/Disgust,111,0.39,28384
+Train,Fear,/Users/samuel/Desktop/ML/data/train/Fear,4097,14.43,28384
+Train,Happy,/Users/samuel/Desktop/ML/data/train/Happy,7215,25.42,28384
+Train,Neutral,/Users/samuel/Desktop/ML/data/train/Neutral,4965,17.49,28384
+Train,Sad,/Users/samuel/Desktop/ML/data/train/Sad,4830,17.02,28384
+Train,Surprise,/Users/samuel/Desktop/ML/data/train/Surprised,3171,11.17,28384
+Test,Angry,/Users/samuel/Desktop/ML/data/test/Angry,958,12.77,7503
+Test,Disgust,/Users/samuel/Desktop/ML/data/test/Disgust,436,5.81,7503
+Test,Fear,/Users/samuel/Desktop/ML/data/test/Fear,1024,13.65,7503
+Test,Happy,/Users/samuel/Desktop/ML/data/test/Happy,1774,23.64,7503
+Test,Neutral,/Users/samuel/Desktop/ML/data/test/Neutral,1233,16.43,7503
+Test,Sad,/Users/samuel/Desktop/ML/data/test/Sad,1247,16.62,7503
+Test,Surprise,/Users/samuel/Desktop/ML/data/test/Surprised,831,11.08,7503

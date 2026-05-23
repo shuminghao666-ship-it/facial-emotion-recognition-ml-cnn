@@ -1,0 +1,6 @@
+﻿Split,Decision_Source,Samples,Accuracy,Macro_F1
+Validation,CNN,2692,0.7165676077265973,0.5867366526004618
+Validation,Angry_Disgust,15,0.5333333333333333,0.2333333333333333
+Validation,Fear_Sad_Neutral,1266,0.5110584518167457,0.2683283967914176
+Validation,Fear_Surprise,285,0.5754385964912281,0.180830236406005
+Validation,Sad_Neutral,0,0.0,0.0

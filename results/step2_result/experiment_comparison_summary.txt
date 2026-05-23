@@ -1,0 +1,46 @@
+Experiment Comparison Summary
+============================================================
+
+Experiment: with_clahe
+Use CLAHE: True
+Selection Metric: Validation Macro F1
+Best Validation Accuracy: 0.6313
+Best Validation Loss: 1.0161
+Best Validation Macro F1: 0.5786
+Test Accuracy: 0.6186
+Test Loss: 1.1249
+Test Macro Precision: 0.6545
+Test Macro Recall: 0.5602
+Test Macro F1: 0.5655
+Test Weighted F1: 0.6102
+Training Time: 350.12 seconds
+Total Experiment Time: 352.93 seconds
+Best Model Path: /Users/samuel/Desktop/ML/models/best_emotion_cnn_pytorch_with_clahe.pth
+
+Experiment: without_clahe
+Use CLAHE: False
+Selection Metric: Validation Macro F1
+Best Validation Accuracy: 0.6456
+Best Validation Loss: 0.9877
+Best Validation Macro F1: 0.5818
+Test Accuracy: 0.6288
+Test Loss: 1.0918
+Test Macro Precision: 0.6417
+Test Macro Recall: 0.5830
+Test Macro F1: 0.5893
+Test Weighted F1: 0.6231
+Training Time: 374.50 seconds
+Total Experiment Time: 376.78 seconds
+Best Model Path: /Users/samuel/Desktop/ML/models/best_emotion_cnn_pytorch_without_clahe.pth
+
+Selected Best Experiment
+------------------------------------------------------------
+Experiment: without_clahe
+Use CLAHE: False
+Selection Metric: Validation Macro F1
+Best Validation Accuracy: 0.6456
+Best Validation Macro F1: 0.5818
+Test Accuracy: 0.6288
+Test Macro F1: 0.5893
+Test Weighted F1: 0.6231
+Best Model Path: /Users/samuel/Desktop/ML/models/best_emotion_cnn_pytorch_without_clahe.pth
