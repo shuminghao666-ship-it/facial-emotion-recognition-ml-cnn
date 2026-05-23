@@ -19,6 +19,7 @@ from project_config import (
     CLASSES,
     CLASS_FOLDER_NAMES,
     IMAGE_EXTENSIONS,
+    PROJECT_ROOT,
     RESULT_DIR,
     TEST_DIR,
     TRAIN_DIR,
@@ -29,6 +30,15 @@ OUTPUT_DIR = RESULT_DIR / "dataset_analysis"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 SUPPORTED_EXTENSIONS = set(IMAGE_EXTENSIONS)
+
+
+def format_repo_path(path):
+    if path is None:
+        return ""
+    try:
+        return path.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
 
 
 def find_class_dir(split_dir, class_name):
@@ -58,7 +68,7 @@ def count_split(split_name, split_dir):
             {
                 "Split": split_name,
                 "Class": class_name,
-                "Folder": str(class_dir) if class_dir else "",
+                "Folder": format_repo_path(class_dir),
                 "Count": len(image_files),
             }
         )
@@ -116,7 +126,7 @@ def check_images():
                         {
                             "Split": split_name,
                             "Class": class_name,
-                            "Path": str(image_path),
+                            "Path": format_repo_path(image_path),
                             "Error": str(exc),
                         }
                     )

@@ -2,10 +2,10 @@
 Objective 1: Traditional Machine Learning Baselines for FER
 
 Train Directory:
-/Users/samuel/Desktop/ML/data/train
+data/train
 
 Test Directory:
-/Users/samuel/Desktop/ML/data/test
+data/test
 
 Image Size:
 (48, 48)
@@ -38,4 +38,4 @@ Raw Pixel is kept as a lightweight reference baseline, while HOG models receive 
 The independent test set is used only for final evaluation.
 
 Output Folder:
-/Users/samuel/Desktop/ML/results/step1_result
+results/step1_result

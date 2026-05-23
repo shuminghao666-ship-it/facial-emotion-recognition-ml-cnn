@@ -15,7 +15,7 @@ Test Macro F1: 0.5655
 Test Weighted F1: 0.6102
 Training Time: 350.12 seconds
 Total Experiment Time: 352.93 seconds
-Best Model Path: /Users/samuel/Desktop/ML/models/best_emotion_cnn_pytorch_with_clahe.pth
+Best Model Path: models/best_emotion_cnn_pytorch_with_clahe.pth
 
 Experiment: without_clahe
 Use CLAHE: False
@@ -31,7 +31,7 @@ Test Macro F1: 0.5893
 Test Weighted F1: 0.6231
 Training Time: 374.50 seconds
 Total Experiment Time: 376.78 seconds
-Best Model Path: /Users/samuel/Desktop/ML/models/best_emotion_cnn_pytorch_without_clahe.pth
+Best Model Path: models/best_emotion_cnn_pytorch_without_clahe.pth
 
 Selected Best Experiment
 ------------------------------------------------------------
@@ -43,4 +43,4 @@ Best Validation Macro F1: 0.5818
 Test Accuracy: 0.6288
 Test Macro F1: 0.5893
 Test Weighted F1: 0.6231
-Best Model Path: /Users/samuel/Desktop/ML/models/best_emotion_cnn_pytorch_without_clahe.pth
+Best Model Path: models/best_emotion_cnn_pytorch_without_clahe.pth
