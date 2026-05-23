@@ -3,8 +3,9 @@ from pathlib import Path
 # ============================================================
 # 1. Project Root
 # ============================================================
-# Root directory of this project.
-PROJECT_ROOT = Path(__file__).resolve().parent
+# Root directory of this project. The source files live in code/, so the
+# repository root is one level above this file.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # ============================================================
 # 2. Dataset Paths

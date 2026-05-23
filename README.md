@@ -1,66 +1,62 @@
-# Hybrid Machine Learning and CNN Fusion for Facial Emotion Recognition
+# Emotion Recognition Project
 
-Repository: `facial-emotion-recognition-ml-cnn`
+GitHub repository:
 
-This repository contains a DS4023 Machine Learning course project for
-seven-class facial emotion recognition. The project follows a FER2013-style
-setting and classifies grayscale facial images into:
+```text
+https://github.com/shuminghao666-ship-it/facial-emotion-recognition-ml-cnn
+```
 
-`Angry`, `Disgust`, `Fear`, `Happy`, `Neutral`, `Sad`, and `Surprise`.
+This project implements a facial emotion recognition pipeline for a DS4023
+Machine Learning course project. It uses a seven-class FER2013-style dataset
+and compares traditional machine learning baselines, a CNN baseline, and
+ML-enhanced CNN fusion methods.
 
-The main goal is not only to train a CNN, but also to compare it with
-traditional machine learning baselines and test whether ML-based feature
-analysis, probability fusion, confusion-aware correction, and stacking can
-improve or explain CNN predictions.
+The target emotion classes are:
 
-## Project Pipeline
+```text
+Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise
+```
 
-The project is organized as a four-step pipeline.
+The project is organized into four ordered steps:
 
-| Step | Script | Purpose |
-|---|---|---|
-| Step 00 | `00_dataset_analysis.py` | Check dataset structure, class distribution, corrupted images, and class imbalance. |
-| Step 01 | `01_traditional_ml_baselines.py` | Compare raw pixels and HOG features using traditional ML classifiers. |
-| Step 02 | `02_cnn_baseline.py` | Train the CNN baseline and compare CNN with CLAHE vs. without CLAHE. |
-| Step 03 | `03_ml_enhanced_cnn.py` | Use CNN features, PCA, HOG-CNN fusion, probability fusion, confusion-aware correction, and stacking to improve and analyze CNN predictions. |
+1. **Dataset analysis** (`code/00_dataset_analysis.py`) - check dataset
+   structure, class distribution, corrupted images, and class imbalance.
+2. **Traditional ML baselines** (`code/01_traditional_ml_baselines.py`) -
+   compare raw pixels and HOG features with Logistic Regression, KNN, and
+   SGD Linear SVM.
+3. **CNN baseline and CLAHE comparison** (`code/02_cnn_baseline.py`) - train
+   a CNN and compare CNN with CLAHE vs. CNN without CLAHE.
+4. **ML-enhanced CNN analysis** (`code/03_ml_enhanced_cnn.py`) - use CNN
+   features, PCA, HOG-CNN fusion, probability fusion, confusion-aware
+   correction, and stacking to improve and analyze CNN predictions.
 
 ## Dataset
 
-The dataset is included in this repository under the `data/` folder.
+The dataset is included directly in this repository under:
 
-Original dataset download link: `TODO: add original FER2013-style dataset link`
+```text
+data/
+```
+
+Original Kaggle dataset source:
+
+```text
+https://www.kaggle.com/datasets/jayeshrohansingh/emotion-detection-dataset/data
+```
+
+This Kaggle dataset is an emotion detection image dataset organized by train
+and test splits. Images are grouped into seven facial emotion classes. In this
+project, the images are treated as low-resolution grayscale facial expression
+samples for FER2013-style emotion classification.
 
 Dataset summary:
 
 - Training images: `28,384`
 - Test images: `7,503`
 - Total images: `35,887`
-- Image type: low-resolution grayscale facial emotion images
-- Classes: `Angry`, `Disgust`, `Fear`, `Happy`, `Neutral`, `Sad`, `Surprise`
+- Imbalance ratio: `16.43:1`
 
-### Dataset Folder Structure
-
-```text
-data/
-├── train/
-│   ├── Angry/
-│   ├── Disgust/
-│   ├── Fear/
-│   ├── Happy/
-│   ├── Neutral/
-│   ├── Sad/
-│   └── Surprise/
-└── test/
-    ├── Angry/
-    ├── Disgust/
-    ├── Fear/
-    ├── Happy/
-    ├── Neutral/
-    ├── Sad/
-    └── Surprise/
-```
-
-### Class Distribution
+Class distribution:
 
 | Class | Train | Test | Total | Percentage |
 |---|---:|---:|---:|---:|
@@ -73,37 +69,35 @@ data/
 | Surprise | 3,171 | 831 | 4,002 | 11.15% |
 
 The dataset is highly imbalanced. `Happy` is the largest class and `Disgust`
-is the smallest class. The imbalance ratio is `16.43:1`. Macro F1 is emphasized
-because accuracy can be dominated by majority classes, while Macro F1 gives
-equal weight to each emotion class.
+is the smallest class. Because of this imbalance, Macro F1 is emphasized in
+addition to accuracy.
 
-## Recommended Project Structure
-
-The current repository uses this structure:
+## Repository Structure
 
 ```text
 facial-emotion-recognition-ml-cnn/
 ├── data/
 │   ├── train/
 │   └── test/
-├── 00_dataset_analysis.py
-├── 01_traditional_ml_baselines.py
-├── 02_cnn_baseline.py
-├── 03_ml_enhanced_cnn.py
-├── project_config.py
-├── emotion_common.py
-├── models/
+├── code/
+│   ├── 00_dataset_analysis.py
+│   ├── 01_traditional_ml_baselines.py
+│   ├── 02_cnn_baseline.py
+│   ├── 03_ml_enhanced_cnn.py
+│   ├── emotion_common.py
+│   └── project_config.py
 ├── results/
 │   ├── dataset_analysis/
 │   ├── step1_result/
 │   ├── step2_result/
 │   └── step3_result/
-├── hybrid_ml_cnn_fer_report.pdf
-├── hybrid_ml_cnn_fer_report.tex
 ├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
+
+The report PDF, LaTeX source, course guideline PDF, model checkpoints, and
+large regenerated model artifacts are not kept in this GitHub version.
 
 ## Requirements
 
@@ -130,31 +124,28 @@ Main packages:
 
 ## Running Instructions
 
-Run all scripts from the repository root.
+Run commands from the repository root.
 
 ```bash
 cd facial-emotion-recognition-ml-cnn
 ```
 
-### Step 00: Dataset Analysis
+### 1. Run dataset analysis
 
 ```bash
-python 00_dataset_analysis.py
+python code/00_dataset_analysis.py
 ```
 
-Main outputs:
+Main output:
 
 ```text
 results/dataset_analysis/
 ```
 
-This step counts train/test images, calculates class percentages, checks
-unreadable images, and generates class distribution figures.
-
-### Step 01: Traditional ML Baselines
+### 2. Run traditional ML baselines
 
 ```bash
-python 01_traditional_ml_baselines.py
+python code/01_traditional_ml_baselines.py
 ```
 
 Models compared:
@@ -164,16 +155,16 @@ Models compared:
 - HOG + KNN
 - HOG + SGD Linear SVM
 
-Main outputs:
+Main output:
 
 ```text
 results/step1_result/
 ```
 
-### Step 02: CNN Baseline and CLAHE Comparison
+### 3. Run CNN baseline
 
 ```bash
-python 02_cnn_baseline.py
+python code/02_cnn_baseline.py
 ```
 
 Experiments:
@@ -181,17 +172,16 @@ Experiments:
 - CNN with CLAHE
 - CNN without CLAHE
 
-Main outputs:
+Main output:
 
 ```text
-models/
 results/step2_result/
 ```
 
-### Step 03: ML-Enhanced CNN Analysis
+### 4. Run ML-enhanced CNN analysis
 
 ```bash
-python 03_ml_enhanced_cnn.py
+python code/03_ml_enhanced_cnn.py
 ```
 
 Methods evaluated:
@@ -205,7 +195,7 @@ Methods evaluated:
 - Stacking over CNN and ML probability outputs
 - Grad-CAM examples for qualitative analysis
 
-Main outputs:
+Main output:
 
 ```text
 results/step3_result/
@@ -222,8 +212,8 @@ results/step3_result/
 | HOG + SGD Linear SVM | 0.3816 | 0.3447 | 0.3728 |
 | Raw Pixel + SGD Linear SVM | 0.2724 | 0.2295 | 0.2627 |
 
-HOG features perform much better than raw pixels. The strongest traditional ML
-baseline is `HOG + KNN`.
+HOG features perform much better than raw pixels. The strongest traditional
+ML baseline is `HOG + KNN`.
 
 ### Step 02: CNN Baseline
 
@@ -247,7 +237,9 @@ the higher validation Macro F1 and better test Macro F1.
 
 Best method:
 
-`Stacked CNN-ML Probabilities + Balanced Logistic Regression`
+```text
+Stacked CNN-ML Probabilities + Balanced Logistic Regression
+```
 
 It improves Macro F1 from `0.5893` for the standalone CNN to `0.6078`, an
 absolute gain of `0.0185`.
@@ -259,55 +251,27 @@ The main confusion patterns are:
 - `Angry` vs. `Disgust`: both are negative expressions and can share similar
   brow or nose-region patterns.
 - `Fear` vs. `Surprise`: both can include widened eyes and open mouths.
-- `Sad` vs. `Neutral`: both may involve subtle or weak facial motion.
+- `Sad` vs. `Neutral`: both may involve subtle facial changes.
 - `Fear`, `Sad`, and `Neutral`: low-resolution images make these negative or
   subtle expressions harder to separate.
 
 The confusion-aware correction method is interpretable, but it does not exceed
-the best stacking model. Its coverage is limited because it only activates on
-selected uncertain cases. Some confused groups overlap, and `Disgust` has very
-few training samples. Stacking is more robust because it combines probability
-outputs from multiple models globally.
-
-## Report
-
-The final course report is included in the repository:
-
-```text
-hybrid_ml_cnn_fer_report.pdf
-hybrid_ml_cnn_fer_report.tex
-```
-
-The report contains the full experiment design, tables, figures, normalized
-confusion matrices, Grad-CAM examples, and discussion.
-
-## Notes About Large Files
-
-The dataset is included under `data/`.
-
-Model checkpoint files such as `.pth`, `.pt`, and `.ckpt` are ignored by
-`.gitignore` because they can be large and can be regenerated by running Step
-02 and Step 03. Large serialized models and feature arrays such as `.pkl` and
-`.npy` are also ignored. Compressed archives and video files are ignored as
-well.
-
-If a GitHub upload exceeds size limits, keep the source scripts, report,
-selected result CSV/TXT files, and key figures, while excluding model
-checkpoints.
+the best stacking model. Stacking is more robust because it combines
+probability outputs from multiple models globally.
 
 ## Main Contribution
 
-The project demonstrates that traditional machine learning methods are useful
-not only as baselines, but also as complementary components for CNN-based FER.
-HOG features help evaluate handcrafted visual structure, ML classifiers provide
-alternative decision boundaries, probability fusion combines CNN and ML
-decisions, and stacking gives the best balanced performance.
+This project shows that traditional machine learning methods are useful not
+only as baselines, but also as complementary components for CNN-based facial
+emotion recognition. HOG features help evaluate handcrafted visual structure,
+ML classifiers provide alternative decision boundaries, probability fusion
+combines CNN and ML decisions, and stacking gives the best balanced
+performance.
 
 ## Future Work
 
 Possible future improvements include:
 
-- Testing on larger in-the-wild FER datasets.
 - Improving minority-class recognition, especially `Disgust`.
 - Exploring better calibration for probability fusion and stacking.
 - Tuning confusion-aware correction thresholds and specialist models.
