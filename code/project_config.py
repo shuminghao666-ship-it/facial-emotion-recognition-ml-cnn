@@ -3,19 +3,23 @@ from pathlib import Path
 # ============================================================
 # 1. Project Root
 # ============================================================
-# Root directory of this project. The source files live in code/, so the
-# repository root is one level above this file.
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+# Root directory of this project.
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 # ============================================================
 # 2. Dataset Paths
 # ============================================================
-# Dataset directory. It should contain train/ and validation/ subfolders.
-# The validation split is used as the held-out evaluation split.
-DATASET_DIR = PROJECT_ROOT / "data"
+# Dataset directory. The FER2013 download is organized as train/ and
+# validation/ folders. In this project, validation is used as the held-out
+# evaluation split when rerunning the experiments.
+DATASET_DIR = PROJECT_ROOT / "fer2013"
 
 TRAIN_DIR = DATASET_DIR / "train"
-TEST_DIR = DATASET_DIR / "validation"
+EVAL_DIR = DATASET_DIR / "validation"
+
+# Backward compatibility: older scripts use TEST_DIR / test_* variable names.
+# In the current rerun, TEST_DIR points to the held-out evaluation split.
+TEST_DIR = EVAL_DIR
 
 # ============================================================
 # 3. Output Paths

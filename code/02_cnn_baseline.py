@@ -6,7 +6,7 @@
 # 1. Train CNN models with and without CLAHE preprocessing.
 # 2. Use class-weighted loss for class imbalance.
 # 3. Select the best checkpoint by validation Macro F1.
-# 4. Save test metrics, class-wise reports, confusion matrices, and curves.
+# 4. Save held-out evaluation metrics, class-wise reports, confusion matrices, and curves.
 #
 # Efficiency Notes:
 # 1. Images are loaded and resized into RAM once.
@@ -108,10 +108,10 @@ if not TRAIN_DIR.exists():
     raise FileNotFoundError(f"TRAIN_DIR does not exist:\n{TRAIN_DIR}")
 
 if not TEST_DIR.exists():
-    raise FileNotFoundError(f"TEST_DIR does not exist:\n{TEST_DIR}")
+    raise FileNotFoundError(f"Held-out evaluation directory does not exist:\n{TEST_DIR}")
 
 print("\nTRAIN_DIR:", TRAIN_DIR)
-print("TEST_DIR :", TEST_DIR)
+print("EVAL_DIR :", TEST_DIR)
 print("MODEL_DIR:", MODEL_DIR)
 print("RESULT_DIR:", RESULT_DIR)
 print("OBJECTIVE2_DIR:", OBJECTIVE2_DIR)
@@ -709,7 +709,7 @@ def run_experiment(
     if use_clahe:
         train_images = apply_clahe_to_image_array(raw_train_images, "Train")
         val_images = apply_clahe_to_image_array(raw_val_images, "Validation")
-        test_images = apply_clahe_to_image_array(raw_test_images, "Test")
+        test_images = apply_clahe_to_image_array(raw_test_images, "Held-out Evaluation")
     else:
         train_images = raw_train_images
         val_images = raw_val_images
@@ -881,9 +881,9 @@ def run_experiment(
     )
 
     # --------------------------------------------------------
-    # Final test evaluation
+    # Final held-out evaluation
     # --------------------------------------------------------
-    print("\nTesting best model...")
+    print("\nRunning held-out evaluation for best model...")
 
     checkpoint = torch.load(best_model_path, map_location=device)
     model.load_state_dict(checkpoint["model_state_dict"])
@@ -894,8 +894,8 @@ def run_experiment(
         criterion,
     )
 
-    print("\nTest Loss:", test_loss)
-    print("Test Accuracy:", test_acc)
+    print("\nHeld-out Evaluation Loss:", test_loss)
+    print("Held-out Evaluation Accuracy:", test_acc)
 
     cm = confusion_matrix(
         true_labels,
@@ -989,12 +989,12 @@ def write_experiment_summary(results):
         lines.append(f"Best Validation Accuracy: {result['best_val_acc']:.4f}")
         lines.append(f"Best Validation Loss: {result['best_val_loss']:.4f}")
         lines.append(f"Best Validation Macro F1: {result['best_val_macro_f1']:.4f}")
-        lines.append(f"Test Accuracy: {result['test_acc']:.4f}")
-        lines.append(f"Test Loss: {result['test_loss']:.4f}")
-        lines.append(f"Test Macro Precision: {result['test_macro_precision']:.4f}")
-        lines.append(f"Test Macro Recall: {result['test_macro_recall']:.4f}")
-        lines.append(f"Test Macro F1: {result['test_macro_f1']:.4f}")
-        lines.append(f"Test Weighted F1: {result['test_weighted_f1']:.4f}")
+        lines.append(f"Held-out Evaluation Accuracy: {result['test_acc']:.4f}")
+        lines.append(f"Held-out Evaluation Loss: {result['test_loss']:.4f}")
+        lines.append(f"Held-out Evaluation Macro Precision: {result['test_macro_precision']:.4f}")
+        lines.append(f"Held-out Evaluation Macro Recall: {result['test_macro_recall']:.4f}")
+        lines.append(f"Held-out Evaluation Macro F1: {result['test_macro_f1']:.4f}")
+        lines.append(f"Held-out Evaluation Weighted F1: {result['test_weighted_f1']:.4f}")
         lines.append(f"Training Time: {result['training_time_seconds']:.2f} seconds")
         lines.append(f"Total Experiment Time: {result['total_experiment_time_seconds']:.2f} seconds")
         lines.append(f"Best Model Path: {result['best_model_path']}")
@@ -1009,9 +1009,9 @@ def write_experiment_summary(results):
     lines.append("Selection Metric: Validation Macro F1")
     lines.append(f"Best Validation Accuracy: {best_result['best_val_acc']:.4f}")
     lines.append(f"Best Validation Macro F1: {best_result['best_val_macro_f1']:.4f}")
-    lines.append(f"Test Accuracy: {best_result['test_acc']:.4f}")
-    lines.append(f"Test Macro F1: {best_result['test_macro_f1']:.4f}")
-    lines.append(f"Test Weighted F1: {best_result['test_weighted_f1']:.4f}")
+    lines.append(f"Held-out Evaluation Accuracy: {best_result['test_acc']:.4f}")
+    lines.append(f"Held-out Evaluation Macro F1: {best_result['test_macro_f1']:.4f}")
+    lines.append(f"Held-out Evaluation Weighted F1: {best_result['test_weighted_f1']:.4f}")
     lines.append(f"Best Model Path: {best_result['best_model_path']}")
     lines.append("")
 
@@ -1052,11 +1052,11 @@ def main():
     print("\nCollecting training images from:", TRAIN_DIR)
     train_all_paths, train_all_labels = collect_image_paths(TRAIN_DIR)
 
-    print("\nCollecting test images from:", TEST_DIR)
+    print("\nCollecting held-out evaluation images from:", TEST_DIR)
     test_paths, test_labels = collect_image_paths(TEST_DIR)
 
     print("\nTotal training/validation images:", len(train_all_paths))
-    print("Total test images:", len(test_paths))
+    print("Total held-out evaluation images:", len(test_paths))
 
     if len(train_all_paths) == 0 or len(test_paths) == 0:
         print("No images found.")
@@ -1076,14 +1076,14 @@ def main():
     print("\nDataset split:")
     print("Train:", len(train_paths))
     print("Validation:", len(val_paths))
-    print("Test:", len(test_paths))
+    print("Held-out Evaluation:", len(test_paths))
 
     # --------------------------------------------------------
     # 3. Preload resized raw images into RAM only once
     # --------------------------------------------------------
     raw_train_images = preload_images_to_memory(train_paths, "Train")
     raw_val_images = preload_images_to_memory(val_paths, "Validation")
-    raw_test_images = preload_images_to_memory(test_paths, "Test")
+    raw_test_images = preload_images_to_memory(test_paths, "Held-out Evaluation")
 
     # --------------------------------------------------------
     # 4. Define experiments

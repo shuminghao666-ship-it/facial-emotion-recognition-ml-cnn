@@ -6,10 +6,10 @@ Train,Happy,fer2013/train/Happy,7215,25.13,28709
 Train,Neutral,fer2013/train/Neutral,4965,17.29,28709
 Train,Sad,fer2013/train/Sad,4830,16.82,28709
 Train,Surprise,fer2013/train/Surprise,3171,11.05,28709
-Test,Angry,fer2013/validation/Angry,491,13.68,3589
-Test,Disgust,fer2013/validation/Disgust,55,1.53,3589
-Test,Fear,fer2013/validation/Fear,528,14.71,3589
-Test,Happy,fer2013/validation/Happy,879,24.49,3589
-Test,Neutral,fer2013/validation/Neutral,626,17.44,3589
-Test,Sad,fer2013/validation/Sad,594,16.55,3589
-Test,Surprise,fer2013/validation/Surprise,416,11.59,3589
+Eval,Angry,fer2013/validation/Angry,491,13.68,3589
+Eval,Disgust,fer2013/validation/Disgust,55,1.53,3589
+Eval,Fear,fer2013/validation/Fear,528,14.71,3589
+Eval,Happy,fer2013/validation/Happy,879,24.49,3589
+Eval,Neutral,fer2013/validation/Neutral,626,17.44,3589
+Eval,Sad,fer2013/validation/Sad,594,16.55,3589
+Eval,Surprise,fer2013/validation/Surprise,416,11.59,3589

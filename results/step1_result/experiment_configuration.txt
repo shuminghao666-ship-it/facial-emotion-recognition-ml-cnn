@@ -4,7 +4,7 @@ Pipeline Step 01: Traditional Machine Learning Baselines for FER
 Train Directory:
 fer2013/train
 
-Test Directory:
+Held-out Evaluation Directory:
 fer2013/validation
 
 Image Size:
@@ -35,7 +35,7 @@ Models:
 Model Selection:
 Validation-based hyperparameter tuning using Macro_F1.
 Raw Pixel is kept as a lightweight reference baseline, while HOG models receive the main tuning effort.
-The independent test set is used only for final evaluation.
+The held-out FER2013 validation split is used only for final evaluation.
 
 Output Folder:
 results/step1_result

@@ -2,11 +2,11 @@ Dataset Analysis Summary
 ============================================================
 
 Training images: 28709
-Test images: 3589
+Held-out evaluation images: 3589
 Total images: 32298
 
 Class distribution:
-   Class  Train_Count  Test_Count  Total_Count  Total_Percentage
+   Class  Train_Count  Eval_Count  Total_Count  Total_Percentage
    Angry         3995         491         4486             13.89
  Disgust          436          55          491              1.52
     Fear         4097         528         4625             14.32

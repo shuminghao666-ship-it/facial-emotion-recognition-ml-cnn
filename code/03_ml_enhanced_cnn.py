@@ -4,7 +4,7 @@
 #
 # Purpose:
 # 1. Load the best CNN model trained in Step 02.
-# 2. Extract CNN deep features from train / validation / test sets
+# 2. Extract CNN deep features from train / internal validation / held-out evaluation splits
 # 3. Train traditional ML classifiers on CNN representations.
 # 4. Compare PCA, HOG-CNN fusion, probability fusion, and stacking.
 # 5. Apply Step 01-guided confusion-aware ML correction.
@@ -531,7 +531,7 @@ def save_confusion_matrix_plot(
 
 def evaluate_cnn_model(model, dataloader, dataset_name):
     """
-    Evaluate the end-to-end CNN on validation or test set.
+    Evaluate the end-to-end CNN on the internal validation or held-out evaluation split.
     """
     model.eval()
 
@@ -818,7 +818,7 @@ def train_and_evaluate_ml_models(
 ):
     """
     Standardize features, train LR / KNN / SGD Linear SVM,
-    evaluate on validation and test sets.
+    evaluate on validation and held-out evaluation splits.
     """
     scaler = StandardScaler()
 
@@ -877,7 +877,7 @@ def train_and_evaluate_ml_models(
             dataset_name="Validation",
         )
 
-        # Test
+        # Held-out evaluation
         test_pred = model.predict(X_test_scaled)
 
         test_metrics = compute_metrics(
@@ -885,7 +885,7 @@ def train_and_evaluate_ml_models(
             y_pred=test_pred,
             model_name=model_name,
             feature_type=feature_type,
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
 
         test_metrics["Training_Time_Seconds"] = training_time
@@ -896,7 +896,7 @@ def train_and_evaluate_ml_models(
             y_pred=test_pred,
             model_name=model_name,
             feature_type=feature_type,
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
 
         save_confusion_matrix_plot(
@@ -904,7 +904,7 @@ def train_and_evaluate_ml_models(
             y_pred=test_pred,
             model_name=model_name,
             feature_type=feature_type,
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
 
     return results
@@ -937,7 +937,7 @@ def build_pca_features(X_train, X_val, X_test, feature_name):
     print(f"Explained variance ratio: {explained_variance:.4f}")
     print("Train PCA shape:", X_train_pca.shape)
     print("Validation PCA shape:", X_val_pca.shape)
-    print("Test PCA shape:", X_test_pca.shape)
+    print("Held-out Evaluation PCA shape:", X_test_pca.shape)
 
     joblib.dump(scaler, MODEL_SAVE_DIR / f"pca_input_scaler_{feature_name}.pkl")
     joblib.dump(pca, MODEL_SAVE_DIR / f"pca_model_{feature_name}.pkl")
@@ -1092,7 +1092,7 @@ def train_and_evaluate_cnn_ml_probability_fusion(
             y_pred=test_pred,
             model_name=fusion_model_name,
             feature_type=feature_type,
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
         test_metrics["Training_Time_Seconds"] = training_time
         test_metrics["CNN_Probability_Weight"] = best_alpha
@@ -1103,14 +1103,14 @@ def train_and_evaluate_cnn_ml_probability_fusion(
             y_pred=test_pred,
             model_name=fusion_model_name,
             feature_type=feature_type,
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
         save_confusion_matrix_plot(
             y_true=y_test,
             y_pred=test_pred,
             model_name=fusion_model_name,
             feature_type=feature_type,
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
 
         print("Probability fusion completed.")
@@ -1270,7 +1270,7 @@ def train_and_evaluate_stacking_meta_classifier(
             y_pred=test_pred,
             model_name=meta_name,
             feature_type="Stacked_CNN_ML_Probabilities",
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
         test_metrics["Training_Time_Seconds"] = training_time
         test_metrics["Stacking_Sources"] = " + ".join(stack_sources)
@@ -1281,14 +1281,14 @@ def train_and_evaluate_stacking_meta_classifier(
             y_pred=test_pred,
             model_name=meta_name,
             feature_type="Stacked_CNN_ML_Probabilities",
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
         save_confusion_matrix_plot(
             y_true=y_test,
             y_pred=test_pred,
             model_name=meta_name,
             feature_type="Stacked_CNN_ML_Probabilities",
-            dataset_name="Test",
+            dataset_name="Evaluation",
         )
 
         print(f"Stacking meta-classifier completed: {meta_name}")
@@ -1755,7 +1755,7 @@ def train_and_evaluate_confusion_aware_correction(
         corrected_group=val_groups,
     )
     save_correction_activation_summary(
-        split_name="Test",
+        split_name="Evaluation",
         true_labels=y_test,
         pred_labels=test_pred,
         corrected_group=test_groups,
@@ -1765,7 +1765,7 @@ def train_and_evaluate_confusion_aware_correction(
 
     for dataset_name, true_labels, pred_labels in [
         ("Validation", y_val, val_pred),
-        ("Test", y_test, test_pred),
+        ("Evaluation", y_test, test_pred),
     ]:
         metrics = compute_metrics(
             y_true=true_labels,
@@ -1800,7 +1800,7 @@ def train_and_evaluate_confusion_aware_correction(
 
     pd.DataFrame(
         {
-            "Test_Group": list(test_correction_counts.keys()),
+            "Evaluation_Group": list(test_correction_counts.keys()),
             "Corrected_Samples": list(test_correction_counts.values()),
         }
     ).to_csv(
@@ -2232,7 +2232,7 @@ def write_objective3_summary(results_df, objective1_df=None):
     summary_path = OBJECTIVE3_DIR / "objective3_summary.txt"
 
     validation_df = results_df[results_df["Dataset"] == "Validation"].copy()
-    test_df = results_df[results_df["Dataset"] == "Test"].copy()
+    test_df = results_df[results_df["Dataset"] == "Evaluation"].copy()
 
     best_validation = validation_df.sort_values(
         "Macro_F1",
@@ -2268,13 +2268,13 @@ def write_objective3_summary(results_df, objective1_df=None):
     lines.append(f"Validation Accuracy: {best_validation['Accuracy']:.4f}")
     lines.append(f"Validation Macro F1: {best_validation['Macro_F1']:.4f}")
     lines.append("")
-    lines.append("Best Test Macro-F1 Model:")
+    lines.append("Best Held-out Evaluation Macro-F1 Model:")
     lines.append(
         f"{best_test['Feature_Type']} + {best_test['Model']}"
     )
-    lines.append(f"Test Accuracy: {best_test['Accuracy']:.4f}")
-    lines.append(f"Test Macro F1: {best_test['Macro_F1']:.4f}")
-    lines.append(f"Test Weighted F1: {best_test['Weighted_F1']:.4f}")
+    lines.append(f"Held-out Evaluation Accuracy: {best_test['Accuracy']:.4f}")
+    lines.append(f"Held-out Evaluation Macro F1: {best_test['Macro_F1']:.4f}")
+    lines.append(f"Held-out Evaluation Weighted F1: {best_test['Weighted_F1']:.4f}")
     lines.append("")
 
     if objective1_df is not None:
@@ -2284,7 +2284,7 @@ def write_objective3_summary(results_df, objective1_df=None):
             "so validation metrics should not be directly compared."
         )
         lines.append(
-            "However, test-set metrics can still be used as broad baseline references."
+            "However, held-out evaluation metrics can still be used as broad baseline references."
         )
         lines.append(
             "Step 03 uses Step 01 insight directly: HOG and distance-weighted "
@@ -2312,7 +2312,7 @@ def main():
     test_paths, test_labels = collect_image_paths(TEST_DIR)
 
     print("\nTotal train/validation images:", len(train_all_paths))
-    print("Total test images:", len(test_paths))
+    print("Total held-out evaluation images:", len(test_paths))
 
     if len(train_all_paths) == 0 or len(test_paths) == 0:
         print("No images found. Stop.")
@@ -2332,7 +2332,7 @@ def main():
     print("\nDataset split for Step 03:")
     print("Train:", len(train_paths))
     print("Validation:", len(val_paths))
-    print("Test:", len(test_paths))
+    print("Held-out Evaluation:", len(test_paths))
 
     # --------------------------------------------------------
     # Step 3. Load Step 02 best CNN
@@ -2366,7 +2366,7 @@ def main():
     cnn_test_metrics, cnn_test_true, cnn_test_pred, cnn_test_probs = evaluate_cnn_model(
         model=model,
         dataloader=test_loader,
-        dataset_name="Test",
+        dataset_name="Evaluation",
     )
 
     cnn_train_true, cnn_train_pred, cnn_train_probs = collect_cnn_outputs(
@@ -2396,7 +2396,7 @@ def main():
     X_test_deep, y_test_deep, test_paths_deep = extract_deep_features(
         model=model,
         dataloader=test_loader,
-        split_name="Test",
+        split_name="Evaluation",
     )
 
     # --------------------------------------------------------
@@ -2499,7 +2499,7 @@ def main():
 
         X_test_hog = extract_hog_features(
             image_paths=test_paths_deep,
-            split_name="Test",
+            split_name="Evaluation",
             use_clahe=use_clahe,
         )
 
@@ -2559,7 +2559,7 @@ def main():
         print("\nFusion feature shape:")
         print("Train:", X_train_fusion.shape)
         print("Validation:", X_val_fusion.shape)
-        print("Test:", X_test_fusion.shape)
+        print("Held-out Evaluation:", X_test_fusion.shape)
 
         fusion_results = train_and_evaluate_ml_models(
             X_train=X_train_fusion,
@@ -2608,7 +2608,7 @@ def main():
 
             X_test_hog = extract_hog_features(
                 image_paths=test_paths_deep,
-                split_name="Test",
+                split_name="Evaluation",
                 use_clahe=use_clahe,
             )
 
@@ -2671,7 +2671,7 @@ def main():
         plot_pca_feature_space(
             X=X_test_deep,
             y=y_test_deep,
-            title="CNN Deep Feature Space on Test Set",
+            title="CNN Deep Feature Space on Held-out Evaluation Split",
             save_name="pca_cnn_deep_feature_test.png",
         )
 
@@ -2679,7 +2679,7 @@ def main():
             plot_pca_feature_space(
                 X=X_test_fusion,
                 y=y_test_deep,
-                title="HOG + CNN Fusion Feature Space on Test Set",
+                title="HOG + CNN Fusion Feature Space on Held-out Evaluation Split",
                 save_name="pca_hog_cnn_fusion_feature_test.png",
             )
 
@@ -2716,7 +2716,9 @@ def main():
         encoding="utf-8-sig",
     )
 
-    results_df[results_df["Dataset"] == "Test"].to_csv(
+    # Some output file names keep "test" for backward compatibility;
+    # in this rerun they refer to the held-out FER2013 validation split.
+    results_df[results_df["Dataset"] == "Evaluation"].to_csv(
         OBJECTIVE3_DIR / "objective3_test_metrics.csv",
         index=False,
         encoding="utf-8-sig",
@@ -2739,13 +2741,13 @@ def main():
 
     plot_metric_comparison(
         results_df=results_df,
-        dataset_name="Test",
+        dataset_name="Evaluation",
         metric_name="Accuracy",
     )
 
     plot_metric_comparison(
         results_df=results_df,
-        dataset_name="Test",
+        dataset_name="Evaluation",
         metric_name="Macro_F1",
     )
 

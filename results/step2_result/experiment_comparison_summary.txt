@@ -7,12 +7,12 @@ Selection Metric: Validation Macro F1
 Best Validation Accuracy: 0.6239
 Best Validation Loss: 1.0370
 Best Validation Macro F1: 0.5878
-Test Accuracy: 0.5497
-Test Loss: 1.4154
-Test Macro Precision: 0.5092
-Test Macro Recall: 0.5538
-Test Macro F1: 0.5248
-Test Weighted F1: 0.5350
+Held-out Evaluation Accuracy: 0.5497
+Held-out Evaluation Loss: 1.4154
+Held-out Evaluation Macro Precision: 0.5092
+Held-out Evaluation Macro Recall: 0.5538
+Held-out Evaluation Macro F1: 0.5248
+Held-out Evaluation Weighted F1: 0.5350
 Training Time: 307.24 seconds
 Total Experiment Time: 309.75 seconds
 Best Model Path: models/best_emotion_cnn_pytorch_with_clahe.pth
@@ -23,12 +23,12 @@ Selection Metric: Validation Macro F1
 Best Validation Accuracy: 0.6369
 Best Validation Loss: 0.9956
 Best Validation Macro F1: 0.6123
-Test Accuracy: 0.5734
-Test Loss: 1.4429
-Test Macro Precision: 0.5379
-Test Macro Recall: 0.5926
-Test Macro F1: 0.5571
-Test Weighted F1: 0.5511
+Held-out Evaluation Accuracy: 0.5734
+Held-out Evaluation Loss: 1.4429
+Held-out Evaluation Macro Precision: 0.5379
+Held-out Evaluation Macro Recall: 0.5926
+Held-out Evaluation Macro F1: 0.5571
+Held-out Evaluation Weighted F1: 0.5511
 Training Time: 349.79 seconds
 Total Experiment Time: 350.72 seconds
 Best Model Path: models/best_emotion_cnn_pytorch_without_clahe.pth
@@ -40,7 +40,7 @@ Use CLAHE: False
 Selection Metric: Validation Macro F1
 Best Validation Accuracy: 0.6369
 Best Validation Macro F1: 0.6123
-Test Accuracy: 0.5734
-Test Macro F1: 0.5571
-Test Weighted F1: 0.5511
+Held-out Evaluation Accuracy: 0.5734
+Held-out Evaluation Macro F1: 0.5571
+Held-out Evaluation Weighted F1: 0.5511
 Best Model Path: models/best_emotion_cnn_pytorch_without_clahe.pth

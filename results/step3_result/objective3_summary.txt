@@ -1,4 +1,4 @@
-Pipeline Step 03 Summary
+﻿Pipeline Step 03 Summary
 ============================================================
 
 Tasks completed:
@@ -19,13 +19,13 @@ Stacked_CNN_ML_Probabilities + Stacking_Logistic_Regression
 Validation Accuracy: 0.6745
 Validation Macro F1: 0.6608
 
-Best Test Macro-F1 Model:
+Best Held-out Evaluation Macro-F1 Model:
 HOG_CNN_Fusion_Probability_Fusion + CNN_ML_Prob_Fusion_KNN
-Test Accuracy: 0.5809
-Test Macro F1: 0.5718
-Test Weighted F1: 0.5607
+Held-out Evaluation Accuracy: 0.5809
+Held-out Evaluation Macro F1: 0.5718
+Held-out Evaluation Weighted F1: 0.5607
 
 Step 01 result file was found.
 Step 01 and Step 03 use different validation split ratios, so validation metrics should not be directly compared.
-However, test-set metrics can still be used as broad baseline references.
+However, held-out evaluation metrics can still be used as broad baseline references.
 Step 03 uses Step 01 insight directly: HOG and distance-weighted KNN are included in the specialist correction stage because they were the strongest traditional ML baseline signals.

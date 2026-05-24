@@ -3,7 +3,7 @@
 # Dataset Analysis for Facial Emotion Recognition
 #
 # Purpose:
-# 1. Count train/test samples for each emotion class.
+# 1. Count training/evaluation samples for each emotion class.
 # 2. Calculate class percentages and class imbalance ratio.
 # 3. Check unreadable or corrupted images.
 # 4. Save distribution tables and figures for the project report.
@@ -68,7 +68,7 @@ def count_split(split_name, split_dir):
 def build_distribution_table():
     rows = []
     rows.extend(count_split("Train", TRAIN_DIR))
-    rows.extend(count_split("Test", TEST_DIR))
+    rows.extend(count_split("Eval", TEST_DIR))
 
     df = pd.DataFrame(rows)
     total_by_split = df.groupby("Split")["Count"].transform("sum")
@@ -81,13 +81,13 @@ def build_distribution_table():
             df[(df["Split"] == "Train") & (df["Class"] == class_name)]["Count"].iloc[0]
         )
         test_count = int(
-            df[(df["Split"] == "Test") & (df["Class"] == class_name)]["Count"].iloc[0]
+            df[(df["Split"] == "Eval") & (df["Class"] == class_name)]["Count"].iloc[0]
         )
         total_rows.append(
             {
                 "Class": class_name,
                 "Train_Count": train_count,
-                "Test_Count": test_count,
+                "Eval_Count": test_count,
                 "Total_Count": train_count + test_count,
             }
         )
@@ -104,7 +104,7 @@ def build_distribution_table():
 def check_images():
     problem_rows = []
 
-    for split_name, split_dir in [("Train", TRAIN_DIR), ("Test", TEST_DIR)]:
+    for split_name, split_dir in [("Train", TRAIN_DIR), ("Eval", TEST_DIR)]:
         for class_name in CLASSES:
             class_dir = find_class_dir(split_dir, class_name)
             for image_path in list_image_files(class_dir):
@@ -137,13 +137,13 @@ def plot_class_distribution(summary_df):
     )
     plt.bar(
         [i + width / 2 for i in x],
-        summary_df["Test_Count"],
+        summary_df["Eval_Count"],
         width=width,
-        label="Test",
+        label="Held-out Evaluation",
     )
     plt.xticks(list(x), summary_df["Class"], rotation=25)
     plt.ylabel("Number of Images")
-    plt.title("Class Distribution in Train and Test Sets")
+    plt.title("Class Distribution in Training and Held-out Evaluation Splits")
     plt.legend()
     plt.tight_layout()
     plt.savefig(OUTPUT_DIR / "class_distribution_train_test.png", dpi=300)
@@ -166,7 +166,7 @@ def plot_total_percentage(summary_df):
 
 def write_text_summary(distribution_df, summary_df, problem_df):
     train_total = int(distribution_df[distribution_df["Split"] == "Train"]["Count"].sum())
-    test_total = int(distribution_df[distribution_df["Split"] == "Test"]["Count"].sum())
+    test_total = int(distribution_df[distribution_df["Split"] == "Eval"]["Count"].sum())
     overall_total = train_total + test_total
 
     max_row = summary_df.loc[summary_df["Total_Count"].idxmax()]
@@ -178,7 +178,7 @@ def write_text_summary(distribution_df, summary_df, problem_df):
         "=" * 60,
         "",
         f"Training images: {train_total}",
-        f"Test images: {test_total}",
+        f"Held-out evaluation images: {test_total}",
         f"Total images: {overall_total}",
         "",
         "Class distribution:",
@@ -200,7 +200,9 @@ def main():
     if not TRAIN_DIR.exists():
         raise FileNotFoundError(f"Training directory does not exist:\n{TRAIN_DIR}")
     if not TEST_DIR.exists():
-        raise FileNotFoundError(f"Test directory does not exist:\n{TEST_DIR}")
+        raise FileNotFoundError(
+            f"Held-out evaluation directory does not exist:\n{TEST_DIR}"
+        )
 
     distribution_df, summary_df = build_distribution_table()
     problem_df = check_images()

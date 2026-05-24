@@ -96,7 +96,7 @@ if not TRAIN_DIR.exists():
     raise FileNotFoundError(f"Training directory does not exist:\n{TRAIN_DIR}")
 
 if not TEST_DIR.exists():
-    raise FileNotFoundError(f"Test directory does not exist:\n{TEST_DIR}")
+    raise FileNotFoundError(f"Held-out evaluation directory does not exist:\n{TEST_DIR}")
 
 CLASS_NAMES = list(CLASSES)
 
@@ -474,7 +474,7 @@ X_test_hog, X_test_raw, y_test, test_file_paths = load_dataset_features(
 )
 
 show_class_distribution(y_train_full, CLASS_NAMES, "Original Train Set")
-show_class_distribution(y_test, CLASS_NAMES, "Original Test Set")
+show_class_distribution(y_test, CLASS_NAMES, "Held-out Evaluation Split")
 
 indices = np.arange(len(y_train_full))
 train_indices, val_indices = train_test_split(
@@ -507,7 +507,7 @@ print("Data split completed")
 print("=" * 70)
 print(f"Training set size   : {len(y_train)}")
 print(f"Validation set size : {len(y_val)}")
-print(f"Test set size       : {len(y_test)}")
+print(f"Held-out evaluation size: {len(y_test)}")
 print(f"HOG feature dim     : {feature_sets['HOG']['train'].shape[1]}")
 print(f"Raw pixel dim       : {feature_sets['Raw_Pixel']['train'].shape[1]}")
 
@@ -580,7 +580,7 @@ selected_models_df.to_csv(
 
 
 # ============================================================
-# 9. Evaluate selected models on validation and test sets
+# 9. Evaluate selected models on validation and held-out evaluation splits
 # ============================================================
 
 all_metrics = []
@@ -608,7 +608,7 @@ for feature_type, feature_data in feature_sets.items():
             X_data=feature_data["test_scaled"],
             y_true=y_test,
             class_names=CLASS_NAMES,
-            dataset_tag="Test",
+            dataset_tag="Evaluation",
         )
         all_metrics.append(test_metrics)
         test_predictions[f"{feature_type}_{model_name}"] = y_pred_test
@@ -632,7 +632,7 @@ results_df.to_csv(
 )
 
 validation_results_df = results_df[results_df["Dataset"] == "Validation"].copy()
-test_results_df = results_df[results_df["Dataset"] == "Test"].copy()
+test_results_df = results_df[results_df["Dataset"] == "Evaluation"].copy()
 
 validation_results_df.to_csv(
     OUTPUT_DIR / "validation_metrics_summary.csv",
@@ -652,14 +652,14 @@ print("=" * 70)
 print(validation_results_df.round(4))
 
 print("\n" + "=" * 70)
-print("Test metrics summary")
+print("Held-out evaluation metrics summary")
 print("=" * 70)
 print(test_results_df.round(4))
 
 plot_model_comparison(results_df, "Validation", "Accuracy")
 plot_model_comparison(results_df, "Validation", "Macro_F1")
-plot_model_comparison(results_df, "Test", "Accuracy")
-plot_model_comparison(results_df, "Test", "Macro_F1")
+plot_model_comparison(results_df, "Evaluation", "Accuracy")
+plot_model_comparison(results_df, "Evaluation", "Macro_F1")
 
 
 # ============================================================
@@ -672,7 +672,7 @@ Pipeline Step 01: Traditional Machine Learning Baselines for FER
 Train Directory:
 {TRAIN_DIR}
 
-Test Directory:
+Held-out Evaluation Directory:
 {TEST_DIR}
 
 Image Size:
@@ -703,7 +703,7 @@ Models:
 Model Selection:
 Validation-based hyperparameter tuning using {SELECTION_METRIC}.
 Raw Pixel is kept as a lightweight reference baseline, while HOG models receive the main tuning effort.
-The independent test set is used only for final evaluation.
+The held-out FER2013 validation split is used only for final evaluation.
 
 Output Folder:
 {OUTPUT_DIR.resolve()}
