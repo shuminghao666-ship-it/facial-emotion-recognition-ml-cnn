@@ -1,23 +1,23 @@
 Dataset Analysis Summary
 ============================================================
 
-Training images: 28384
-Test images: 7503
-Total images: 35887
+Training images: 28709
+Test images: 3589
+Total images: 32298
 
 Class distribution:
    Class  Train_Count  Test_Count  Total_Count  Total_Percentage
-   Angry         3995         958         4953             13.80
- Disgust          111         436          547              1.52
-    Fear         4097        1024         5121             14.27
-   Happy         7215        1774         8989             25.05
- Neutral         4965        1233         6198             17.27
-     Sad         4830        1247         6077             16.93
-Surprise         3171         831         4002             11.15
+   Angry         3995         491         4486             13.89
+ Disgust          436          55          491              1.52
+    Fear         4097         528         4625             14.32
+   Happy         7215         879         8094             25.06
+ Neutral         4965         626         5591             17.31
+     Sad         4830         594         5424             16.79
+Surprise         3171         416         3587             11.11
 
 Class imbalance:
-Most frequent class: Happy (8989 images)
-Least frequent class: Disgust (547 images)
-Imbalance ratio: 16.43:1
+Most frequent class: Happy (8094 images)
+Least frequent class: Disgust (491 images)
+Imbalance ratio: 16.48:1
 
 Unreadable or corrupted images: 0

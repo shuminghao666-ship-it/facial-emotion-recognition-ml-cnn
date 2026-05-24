@@ -10,11 +10,12 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # ============================================================
 # 2. Dataset Paths
 # ============================================================
-# Dataset directory. It should contain train/ and test/ subfolders.
+# Dataset directory. It should contain train/ and validation/ subfolders.
+# The validation split is used as the held-out evaluation split.
 DATASET_DIR = PROJECT_ROOT / "data"
 
 TRAIN_DIR = DATASET_DIR / "train"
-TEST_DIR = DATASET_DIR / "test"
+TEST_DIR = DATASET_DIR / "validation"
 
 # ============================================================
 # 3. Output Paths

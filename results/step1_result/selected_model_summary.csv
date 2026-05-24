@@ -1,5 +1,5 @@
 ﻿Feature_Type,Model,Best_Parameters,Training_Time_Seconds
-HOG,Logistic_Regression,"{'C': 1.0, 'class_weight': None}",3.7678370475769043
-HOG,SGD_Linear_SVM,"{'alpha': 0.001, 'class_weight': 'balanced'}",3.102687120437622
-HOG,KNN,"{'n_neighbors': 3, 'weights': 'distance'}",0.0034780502319335938
-Raw_Pixel,SGD_Linear_SVM,"{'alpha': 0.0001, 'class_weight': None}",14.387396097183228
+HOG,Logistic_Regression,"{'C': 1.0, 'class_weight': None}",3.134864091873169
+HOG,SGD_Linear_SVM,"{'alpha': 0.001, 'class_weight': 'balanced'}",4.0437939167022705
+HOG,KNN,"{'n_neighbors': 3, 'weights': 'distance'}",0.0036401748657226562
+Raw_Pixel,SGD_Linear_SVM,"{'alpha': 0.0001, 'class_weight': None}",33.033427238464355

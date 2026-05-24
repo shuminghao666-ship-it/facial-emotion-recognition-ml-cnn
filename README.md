@@ -6,12 +6,11 @@ GitHub repository:
 https://github.com/shuminghao666-ship-it/facial-emotion-recognition-ml-cnn
 ```
 
-This project implements a facial emotion recognition pipeline for a DS4023
-Machine Learning course project. It uses a seven-class FER2013-style dataset
-and compares traditional machine learning baselines, a CNN baseline, and
-ML-enhanced CNN fusion methods.
+This repository contains a DS4023 Machine Learning course project on
+seven-class facial emotion recognition. The project compares traditional
+machine learning baselines, a CNN baseline, and ML-enhanced CNN fusion methods.
 
-The target emotion classes are:
+Target classes:
 
 ```text
 Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise
@@ -20,7 +19,7 @@ Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise
 The project is organized into four ordered steps:
 
 1. **Dataset analysis** (`code/00_dataset_analysis.py`) - check dataset
-   structure, class distribution, corrupted images, and class imbalance.
+   structure, class distribution, unreadable images, and class imbalance.
 2. **Traditional ML baselines** (`code/01_traditional_ml_baselines.py`) -
    compare raw pixels and HOG features with Logistic Regression, KNN, and
    SGD Linear SVM.
@@ -28,7 +27,7 @@ The project is organized into four ordered steps:
    a CNN and compare CNN with CLAHE vs. CNN without CLAHE.
 4. **ML-enhanced CNN analysis** (`code/03_ml_enhanced_cnn.py`) - use CNN
    features, PCA, HOG-CNN fusion, probability fusion, confusion-aware
-   correction, and stacking to improve and analyze CNN predictions.
+   correction, stacking, and Grad-CAM analysis.
 
 ## Dataset
 
@@ -44,32 +43,28 @@ Original Kaggle dataset source:
 https://www.kaggle.com/datasets/jayeshrohansingh/emotion-detection-dataset/data
 ```
 
-This Kaggle dataset is an emotion detection image dataset organized by train
-and test splits. Images are grouped into seven facial emotion classes. In this
-project, the images are treated as low-resolution grayscale facial expression
-samples for FER2013-style emotion classification.
-
-Note: the Kaggle folder name `Surprised` is mapped to the project class label
-`Surprise` in `code/project_config.py`.
+This Kaggle dataset is a FER2013-style emotion detection image dataset. In the
+final rerun, `data/train` is used as the training split and `data/validation`
+is used as the held-out evaluation split.
 
 Dataset summary:
 
-- Training images: `28,384`
-- Test images: `7,503`
-- Total images: `35,887`
-- Imbalance ratio: `16.43:1`
+- Training images: `28,709`
+- Held-out evaluation images: `3,589`
+- Total images: `32,298`
+- Imbalance ratio: `16.48:1`
 
 Class distribution:
 
-| Class | Train | Test | Total | Percentage |
+| Class | Train | Evaluation | Total | Percentage |
 |---|---:|---:|---:|---:|
-| Angry | 3,995 | 958 | 4,953 | 13.80% |
-| Disgust | 111 | 436 | 547 | 1.52% |
-| Fear | 4,097 | 1,024 | 5,121 | 14.27% |
-| Happy | 7,215 | 1,774 | 8,989 | 25.05% |
-| Neutral | 4,965 | 1,233 | 6,198 | 17.27% |
-| Sad | 4,830 | 1,247 | 6,077 | 16.93% |
-| Surprise | 3,171 | 831 | 4,002 | 11.15% |
+| Angry | 3,995 | 491 | 4,486 | 13.89% |
+| Disgust | 436 | 55 | 491 | 1.52% |
+| Fear | 4,097 | 528 | 4,625 | 14.32% |
+| Happy | 7,215 | 879 | 8,094 | 25.06% |
+| Neutral | 4,965 | 626 | 5,591 | 17.31% |
+| Sad | 4,830 | 594 | 5,424 | 16.79% |
+| Surprise | 3,171 | 416 | 3,587 | 11.11% |
 
 The dataset is highly imbalanced. `Happy` is the largest class and `Disgust`
 is the smallest class. Because of this imbalance, Macro F1 is emphasized in
@@ -81,7 +76,7 @@ addition to accuracy.
 facial-emotion-recognition-ml-cnn/
 ├── data/
 │   ├── train/
-│   └── test/
+│   └── validation/
 ├── code/
 │   ├── 00_dataset_analysis.py
 │   ├── 01_traditional_ml_baselines.py
@@ -91,6 +86,7 @@ facial-emotion-recognition-ml-cnn/
 │   └── project_config.py
 ├── results/
 │   ├── dataset_analysis/
+│   ├── report_figures/
 │   ├── step1_result/
 │   ├── step2_result/
 │   └── step3_result/
@@ -99,10 +95,10 @@ facial-emotion-recognition-ml-cnn/
 └── README.md
 ```
 
-The report PDF, LaTeX source, course guideline PDF, model checkpoints, and
-large regenerated model artifacts are not kept in this GitHub version.
-The `results/` folder is kept so the main experiment outputs can be reviewed
-without rerunning the full training pipeline.
+The report PDF, LaTeX source, course guideline PDF, model checkpoints, `.npy`
+feature arrays, and `.pkl` model artifacts are not kept in this GitHub version.
+The `results/` folder keeps the main readable experiment outputs, including
+CSV summaries, text reports, and key figures.
 
 ## Requirements
 
@@ -177,9 +173,10 @@ Experiments:
 - CNN with CLAHE
 - CNN without CLAHE
 
-Main output:
+Main outputs:
 
 ```text
+models/
 results/step2_result/
 ```
 
@@ -213,44 +210,44 @@ results/step3_result/
 
 ### Step 01: Traditional ML Baselines
 
-| Method | Accuracy | Macro F1 | Weighted F1 |
+| Method | Evaluation Accuracy | Evaluation Macro F1 | Evaluation Weighted F1 |
 |---|---:|---:|---:|
-| HOG + KNN | 0.4743 | 0.4296 | 0.4583 |
-| HOG + Logistic Regression | 0.4100 | 0.3545 | 0.3941 |
-| HOG + SGD Linear SVM | 0.3816 | 0.3447 | 0.3728 |
-| Raw Pixel + SGD Linear SVM | 0.2724 | 0.2295 | 0.2627 |
+| HOG + KNN | 0.4503 | 0.4391 | 0.4333 |
+| HOG + Logistic Regression | 0.3862 | 0.3475 | 0.3694 |
+| HOG + SGD Linear SVM | 0.3553 | 0.3019 | 0.3373 |
+| Raw Pixel + SGD Linear SVM | 0.2828 | 0.2251 | 0.2690 |
 
-HOG features perform much better than raw pixels. The strongest traditional
-ML baseline is `HOG + KNN`.
+HOG features perform much better than raw pixels. The strongest traditional ML
+baseline is `HOG + KNN`.
 
 ### Step 02: CNN Baseline
 
-| Model | Validation Macro F1 | Test Accuracy | Test Macro F1 | Test Weighted F1 |
+| Model | Validation Macro F1 | Evaluation Accuracy | Evaluation Macro F1 | Evaluation Weighted F1 |
 |---|---:|---:|---:|---:|
-| CNN with CLAHE | 0.5786 | 0.6186 | 0.5655 | 0.6102 |
-| CNN without CLAHE | 0.5818 | 0.6288 | 0.5893 | 0.6231 |
+| CNN with CLAHE | 0.5878 | 0.5497 | 0.5248 | 0.5350 |
+| CNN without CLAHE | 0.6123 | 0.5734 | 0.5571 | 0.5511 |
 
-The CNN without CLAHE is selected as the Step 02 baseline because it achieves
-the higher validation Macro F1 and better test Macro F1.
+The CNN without CLAHE is selected as the Step 02 baseline.
 
 ### Step 03: ML-Enhanced CNN
 
-| Method | Accuracy | Macro F1 | Weighted F1 |
+| Method | Evaluation Accuracy | Evaluation Macro F1 | Evaluation Weighted F1 |
 |---|---:|---:|---:|
-| CNN End-to-End | 0.6288 | 0.5893 | 0.6231 |
-| CNN Feature KNN + CNN probability fusion | 0.6388 | 0.5960 | 0.6330 |
-| HOG-CNN KNN + CNN probability fusion | 0.6435 | 0.5992 | 0.6357 |
-| Specialist ML Correction | 0.6263 | 0.5865 | 0.6210 |
-| Stacking + Balanced Logistic Regression | 0.6388 | 0.6078 | 0.6397 |
+| CNN End-to-End | 0.5734 | 0.5571 | 0.5511 |
+| CNN Deep Feature + Logistic Regression | 0.5804 | 0.5603 | 0.5616 |
+| CNN Deep Feature Probability Fusion + Logistic Regression | 0.5821 | 0.5655 | 0.5619 |
+| HOG-CNN Fusion Probability Fusion + KNN | 0.5809 | 0.5718 | 0.5607 |
+| Stacking + Logistic Regression | 0.5879 | 0.5653 | 0.5686 |
+| Stacking + Balanced Logistic Regression | 0.5865 | 0.5570 | 0.5670 |
 
 Best method:
 
 ```text
-Stacked CNN-ML Probabilities + Balanced Logistic Regression
+HOG-CNN Fusion Probability Fusion + KNN
 ```
 
-It improves Macro F1 from `0.5893` for the standalone CNN to `0.6078`, an
-absolute gain of `0.0185`.
+It improves Macro F1 from `0.5571` for the standalone CNN to `0.5718`, an
+absolute gain of `0.0147`.
 
 ## Error Analysis Summary
 
@@ -263,25 +260,26 @@ The main confusion patterns are:
 - `Fear`, `Sad`, and `Neutral`: low-resolution images make these negative or
   subtle expressions harder to separate.
 
-The confusion-aware correction method is interpretable, but it does not exceed
-the best stacking model. Stacking is more robust because it combines
-probability outputs from multiple models globally.
+The best model uses probability-level fusion between CNN predictions and a
+HOG-CNN KNN classifier. This connects Step 03 to the Step 01 finding that HOG +
+KNN is the strongest traditional ML baseline. The confusion-aware correction
+method remains useful for interpretation, but its selective corrections do not
+outperform the global probability-fusion model.
 
 ## Main Contribution
 
 This project shows that traditional machine learning methods are useful not
 only as baselines, but also as complementary components for CNN-based facial
 emotion recognition. HOG features help evaluate handcrafted visual structure,
-ML classifiers provide alternative decision boundaries, probability fusion
-combines CNN and ML decisions, and stacking gives the best balanced
-performance.
+ML classifiers provide alternative decision boundaries, and probability fusion
+can combine CNN and ML decisions to improve balanced Macro F1.
 
 ## Future Work
 
 Possible future improvements include:
 
 - Improving minority-class recognition, especially `Disgust`.
-- Exploring better calibration for probability fusion and stacking.
+- Exploring better calibration for probability fusion.
 - Tuning confusion-aware correction thresholds and specialist models.
 - Comparing with stronger CNN backbones while keeping the ML-enhancement
   analysis.

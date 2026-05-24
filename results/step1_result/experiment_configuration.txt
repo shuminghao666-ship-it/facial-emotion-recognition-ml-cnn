@@ -1,11 +1,11 @@
-
-Objective 1: Traditional Machine Learning Baselines for FER
+﻿
+Pipeline Step 01: Traditional Machine Learning Baselines for FER
 
 Train Directory:
-data/train
+fer2013/train
 
 Test Directory:
-data/test
+fer2013/validation
 
 Image Size:
 (48, 48)

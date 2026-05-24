@@ -1,8 +1,8 @@
 ﻿Class_ID,Class_Name,Count,Percentage
-0,Angry,958,12.77
-1,Disgust,436,5.81
-2,Fear,1024,13.65
-3,Happy,1774,23.64
-4,Neutral,1233,16.43
-5,Sad,1247,16.62
-6,Surprise,831,11.08
+0,Angry,491,13.68
+1,Disgust,55,1.53
+2,Fear,528,14.71
+3,Happy,879,24.49
+4,Neutral,626,17.44
+5,Sad,594,16.55
+6,Surprise,416,11.59

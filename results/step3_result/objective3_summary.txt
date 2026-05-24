@@ -1,8 +1,8 @@
-Objective 3 Summary
+Pipeline Step 03 Summary
 ============================================================
 
 Tasks completed:
-1. Loaded the best CNN model from Objective 2.
+1. Loaded the best CNN model from Step 02.
 2. Extracted CNN deep features from the penultimate representation layer.
 3. Trained Logistic Regression, KNN, and SGD Linear SVM on CNN deep features.
 4. Applied PCA to CNN deep features and trained ML classifiers on the reduced feature space.
@@ -16,16 +16,16 @@ Tasks completed:
 
 Best Validation Macro-F1 Model:
 Stacked_CNN_ML_Probabilities + Stacking_Logistic_Regression
-Validation Accuracy: 0.6686
-Validation Macro F1: 0.5985
+Validation Accuracy: 0.6745
+Validation Macro F1: 0.6608
 
 Best Test Macro-F1 Model:
-Stacked_CNN_ML_Probabilities + Stacking_Balanced_Logistic_Regression
-Test Accuracy: 0.6388
-Test Macro F1: 0.6078
-Test Weighted F1: 0.6397
+HOG_CNN_Fusion_Probability_Fusion + CNN_ML_Prob_Fusion_KNN
+Test Accuracy: 0.5809
+Test Macro F1: 0.5718
+Test Weighted F1: 0.5607
 
-Objective 1 result file was found.
-Objective 1 and Objective 3 use different validation split ratios, so validation metrics should not be directly compared.
+Step 01 result file was found.
+Step 01 and Step 03 use different validation split ratios, so validation metrics should not be directly compared.
 However, test-set metrics can still be used as broad baseline references.
-Objective 3 uses Objective 1 insight directly: HOG and distance-weighted KNN are included in the specialist correction stage because they were the strongest traditional ML baseline signals.
+Step 03 uses Step 01 insight directly: HOG and distance-weighted KNN are included in the specialist correction stage because they were the strongest traditional ML baseline signals.
