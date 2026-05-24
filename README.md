@@ -113,7 +113,7 @@ Script:
 Purpose:
 
 - Build non-deep-learning baselines for comparison.
-- Test whether handcrafted HOG features are better than raw pixels.
+- Evaluate whether handcrafted HOG features are better than raw pixels.
 - Use validation Macro F1 for model selection because the dataset is class
   imbalanced.
 
